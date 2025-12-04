@@ -1,20 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { GetUserInfo } from "../Utils/Auth";
 
 export default function SplashScreen({ navigation }) {
+
+  useEffect(() => {
+    const checkUser = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      const userInfo = await GetUserInfo();
+
+      if (userInfo && userInfo.name) {
+        navigation.replace('BottomScreen'); 
+      } else {
+        navigation.replace('IntroScreen');
+      }
+    };
+
+    checkUser();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
-      {/* ---- YOUR OLD UI ---- */}
       <Image source={require("../images/Logo.png")} style={styles.logo} />
-
-      {/* ---- NEXT BUTTON ---- */}
-      <TouchableOpacity
-        style={styles.nextBtn}
-        onPress={() => navigation.navigate("IntroScreen")}
-      >
-        <Text style={styles.nextTxt}>Next</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 }

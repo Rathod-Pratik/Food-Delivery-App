@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,12 +10,12 @@ import {
   Animated,
   Pressable,
   StatusBar,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { height, width } = Dimensions.get("window");
 
-// local image - replace with your actual image in ../images/
+// local image - replace with your actual image paths
 const MAP_IMAGE = require("../images/Map.png");
 
 const ICON_LOCATION = require("../images/locationRed.png");
@@ -28,23 +28,25 @@ const SHEET_HEIGHT = height * 0.62; // visible height of sheet
 
 export default function InstantDelivery({ navigation }) {
   const [vehicle, setVehicle] = useState("bike");
-  const [isOpen, setIsOpen] = useState(false);
+  
+  // 1. Set default state to TRUE
+  const [isOpen, setIsOpen] = useState(true);
 
-  // start sheet off-screen by SHEET_HEIGHT
-  const sheetTranslateY = useRef(new Animated.Value(SHEET_HEIGHT)).current;
-  const overlayOpacity = useRef(new Animated.Value(0)).current;
+  // 2. Initialize animation values to "Open" state (TranslateY=0, Opacity=0.5)
+  const sheetTranslateY = useRef(new Animated.Value(0)).current;
+  const overlayOpacity = useRef(new Animated.Value(0.5)).current;
 
   const openSheet = () => {
     setIsOpen(true);
     Animated.parallel([
       Animated.timing(sheetTranslateY, {
         toValue: 0,
-        duration: 320,
+        duration: 260,
         useNativeDriver: true,
       }),
       Animated.timing(overlayOpacity, {
-        toValue: 0.4,
-        duration: 320,
+        toValue: 0.5,
+        duration: 260,
         useNativeDriver: true,
       }),
     ]).start();
@@ -62,12 +64,9 @@ export default function InstantDelivery({ navigation }) {
         duration: 260,
         useNativeDriver: true,
       }),
-    ]).start(() => {
-      setIsOpen(false);
-    });
+    ]).start(() => setIsOpen(false));
   };
 
-  // Back button: if sheet open -> close it. Else go back via navigation (if available)
   const handleBackPress = () => {
     if (isOpen) {
       closeSheet();
@@ -75,9 +74,6 @@ export default function InstantDelivery({ navigation }) {
     }
     if (navigation && typeof navigation.goBack === "function") {
       navigation.goBack();
-    } else {
-      // fallback - no navigation provided
-      console.warn("No navigation.goBack available.");
     }
   };
 
@@ -85,22 +81,21 @@ export default function InstantDelivery({ navigation }) {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
 
-      {/* Fullscreen image */}
       <Image source={MAP_IMAGE} style={styles.fullImage} resizeMode="cover" />
 
-      {/* Top-left circular back button */}
       <SafeAreaView style={styles.topControls}>
         <TouchableOpacity style={styles.backBtn} onPress={handleBackPress}>
           <Text style={styles.backIcon}>‹</Text>
         </TouchableOpacity>
       </SafeAreaView>
 
-      {/* Floating open button */}
-      <TouchableOpacity style={styles.openFloating} onPress={openSheet}>
-        <Text style={styles.openTxt}>Open</Text>
-      </TouchableOpacity>
+      {!isOpen && (
+        <TouchableOpacity style={styles.openFloating} onPress={openSheet}>
+          <Text style={styles.openTxt}>Open</Text>
+        </TouchableOpacity>
+      )}
 
-      {/* Overlay - pointerEvents only active when sheet is open */}
+      {/* Overlay */}
       <Animated.View
         pointerEvents={isOpen ? "auto" : "none"}
         style={[styles.overlay, { opacity: overlayOpacity }]}
@@ -108,7 +103,7 @@ export default function InstantDelivery({ navigation }) {
         <Pressable style={styles.overlayFill} onPress={closeSheet} />
       </Animated.View>
 
-      {/* Animated sheet container - translateY based on SHEET_HEIGHT */}
+      {/* Bottom Sheet */}
       <Animated.View
         style={[
           styles.animatedSheetContainer,
@@ -162,16 +157,11 @@ export default function InstantDelivery({ navigation }) {
                 <Image source={IMG_VAN} style={styles.vehicleIcon} resizeMode="contain" />
               </TouchableOpacity>
             </View>
-
             <TouchableOpacity
               style={styles.nextButton}
               onPress={() => navigation?.navigate?.("DeliveryInProgressScreen")}
             >
               <Text style={styles.nextText}>Next</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.closeBtn} onPress={closeSheet}>
-              <Text style={styles.closeTxt}>Close</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -228,9 +218,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    backgroundColor: "#000", 
     zIndex: 25,
   },
-  overlayFill: { flex: 1, backgroundColor: "#000" },
+  overlayFill: { flex: 1 }, // Touchable area to close
 
   animatedSheetContainer: {
     position: "absolute",
@@ -306,6 +297,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   nextText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+
+  // Review Button Style
+  reviewButton: {
+    marginTop: 12,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#0B6A66",
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  reviewText: { color: "#0B6A66", fontSize: 16, fontWeight: "600" },
 
   closeBtn: {
     marginTop: 18,

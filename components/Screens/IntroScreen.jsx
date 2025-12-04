@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
@@ -6,55 +6,59 @@ import {
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
-  
-} from "react-native";
+  StatusBar,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const IntroScreen = ({navigation}) => {
+const IntroScreen = ({ navigation }) => {
   return (
     <ImageBackground
+      source={require('../images/Welcome.png')}
       style={styles.container}
-      source={require("../images/Onboarding.png")}
+      resizeMode="cover"
     >
-      <View style={styles.logoRow}>
-        {/* <Image
-          source={require("../images/Logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        /> */}
-        {/* <Text style={styles.logoText}>Snap</Text> */}
-      </View>
+      <SafeAreaView style={styles.overlay}>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
+        <View style={styles.logoRow}>
+          <Image
+            source={require('../images/WhiteLogo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
 
-      <View style={styles.bottom}>
-        {/* <Text style={styles.title}>Request for Delivery{"\n"}in few clicks</Text>
+        <View style={styles.bottom}>
+          <Text style={styles.title}>
+            Request for Delivery{'\n'}in few clicks
+          </Text>
 
-        <Text style={styles.subtitle}>
-          On-demand delivery whenever and wherever the need arises.
-        </Text>
+          <Text style={styles.subtitle}>
+            On-demand delivery whenever and wherever the need arises.
+          </Text>
 
-        <View style={styles.dotsRow}>
-          <View style={styles.dotActive} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-        </View> */}
+          <View style={styles.dotsRow}>
+            <View style={styles.dotActive} />
+            <View style={styles.dot} />
+            <View style={styles.dot} />
+          </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("LoginScreen")}>
-          <Text style={styles.btnText}>Get Started</Text>
-        </TouchableOpacity>
-        
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('LoginScreen')}
+          >
+            <Text style={styles.btnText}>Get Started</Text>
+          </TouchableOpacity>
 
-        {/* <Text style={styles.footer}>
-          Have an account already? <Text style={styles.signIn}>SIGN IN</Text>
-        </Text> */}
-   
-      </View>
-      
-            {/* ---- NEXT BUTTON ---- */}
-      {/* <TouchableOpacity
-        style={styles.nextBtn}
-        onPress={() => navigation.navigate("LoginScreen")}
-      >
-        <Text style={styles.nextTxt}>Next</Text>
-      </TouchableOpacity> */}
+          <Text style={styles.footer}>
+            Have an account already? <Text style={styles.signIn}>SIGN IN</Text>
+          </Text>
+        </View>
+
+      </SafeAreaView>
     </ImageBackground>
   );
 };
@@ -62,39 +66,85 @@ const IntroScreen = ({navigation}) => {
 export default IntroScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, height:"100%", width:"100%"},
-  logoRow: { marginTop: 50, flexDirection: "row", alignSelf:"center"  },
-  logo: { width: 150, height: 150},
-  logoText: { marginLeft: 8, fontSize: 28, fontWeight: "700", color: "#0C1A30" },
-  bottom: { position: "absolute", bottom: 109, paddingHorizontal: 20, width: "100%" },
-  title: { fontSize: 28, fontWeight: "700", color: "#fff" },
-  subtitle: { marginTop: 10, width: "85%", color: "#fff", fontSize: 15 },
-  dotsRow: { flexDirection: "row", marginVertical: 25 },
+  container: {
+    flex: 1,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)', 
+  },
+  logoRow: {
+    marginTop: 80,
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 108,
+    height: 60,
+  },
+  logoText: {
+    marginLeft: 8,
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  bottom: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 10
+  },
+  subtitle: {
+    color: '#fff',
+    fontSize: 15,
+    marginBottom: 20,
+    lineHeight: 22,
+  },
+  dotsRow: {
+    flexDirection: 'row',
+    marginBottom: 30,
+    justifyContent:"center"
+  },
   dotActive: {
     width: 20,
     height: 8,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 5,
     marginRight: 8,
   },
-  dot: { width: 8, height: 8, backgroundColor: "#ddd", borderRadius: 5, marginRight: 8 },
+  dot: {
+    width: 8,
+    height: 8,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: 5,
+    marginRight: 8,
+  },
   button: {
-    backgroundColor: "#006970",
-    paddingVertical: 19,
+    backgroundColor: '#006970',
+    paddingVertical: 18,
     borderRadius: 14,
-    alignItems: "center",
+    alignItems: 'center',
+    width: '100%',
   },
-  btnText: { color: "#fff", fontSize: 17, fontWeight: "600" },
-  footer: { marginTop: 20, color: "#fff", textAlign: "center" },
-  signIn: { fontWeight: "700", textDecorationLine: "underline" },
-  nextBtn: {
-    marginTop:10,
-    backgroundColor: "#000",
-    paddingHorizontal: 30,
-    paddingVertical: 12,
-    borderRadius: 10,
-    width:100,
-    alignSelf:"center"
+  btnText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '600',
   },
-  nextTxt: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  footer: {
+    marginTop: 20,
+    color: '#fff',
+    textAlign: 'center',
+  },
+  signIn: {
+    fontWeight: '700',
+    textDecorationLine: 'underline',
+  },
 });

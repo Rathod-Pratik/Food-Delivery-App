@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "components/Fonts/Baloo-Regular.ttf",
+      "sha1": "7d154bffa41d7da81d058a850ce5746440100373"
+    },
+    {
+      "path": "components/Fonts/BalooBhai-Regular.ttf",
+      "sha1": "b5194e03e5e88395e73253799e2231c2ede86c3d"
+    },
+    {
+      "path": "components/Fonts/BalooBhaijaan-Regular.ttf",
+      "sha1": "446e0b4d76459fac98b21c3a75d7f54bc3d002b1"
+    },
+    {
+      "path": "components/Fonts/BalooBhaina-Regular.ttf",
+      "sha1": "bb98a9360f988ad3d6ca4a5f4314d556a704b136"
+    },
+    {
+      "path": "components/Fonts/BalooChettan-Regular.ttf",
+      "sha1": "ed3f7ce7c6d87125db4d573bf7fb52a98a3aae5f"
+    },
+    {
+      "path": "components/Fonts/BalooDa-Regular.ttf",
+      "sha1": "c5ba798315a38b58ec48248ce48acc7702842b91"
+    },
+    {
+      "path": "components/Fonts/BalooPaaji-Regular.ttf",
+      "sha1": "be414a7975905f8fb72918fc21b316cda07f35d5"
+    },
+    {
+      "path": "components/Fonts/BalooTamma-Regular.ttf",
+      "sha1": "059430afe551c719f2d1f440104396cbe40baf91"
+    },
+    {
+      "path": "components/Fonts/BalooTammudu-Regular.ttf",
+      "sha1": "4b4fb11908f6bd5312595cf09a3e15db7cef53d0"
+    },
+    {
+      "path": "components/Fonts/BalooThambi-Regular.ttf",
+      "sha1": "8149b963f03a08333b50b60566fc5baf75ca0929"
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 // screens/ProfileMenu.js
 import React from "react";
 import {
-  SafeAreaView,
   View,
   Text,
   StyleSheet,
@@ -9,6 +8,8 @@ import {
   Image,
   ScrollView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { LogoutUser } from "../Utils/Auth";
 
 /* Your Icons */
 const IMG_AVATAR = require("../imageswebp/profile.webp");
@@ -27,6 +28,11 @@ export default function Profile({ navigation }) {
       <Text style={styles.rowLabel}>{label}</Text>
     </TouchableOpacity>
   );
+
+  const logout=async()=>{
+    navigation.navigate("LoginScreen");
+    await LogoutUser();
+  }
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -76,7 +82,7 @@ export default function Profile({ navigation }) {
         {/* <View style={styles.spacer} /> */}
 
         {/* Sign Out Row */}
-        <TouchableOpacity style={styles.signOutRow} onPress={() => {}}>
+        <TouchableOpacity style={styles.signOutRow} onPress={logout}>
           <Image source={ICON_SIGNOUT} style={styles.signOutIcon} resizeMode="contain" />
           <Text style={styles.signOutLabel}>Sign out</Text>
         </TouchableOpacity>

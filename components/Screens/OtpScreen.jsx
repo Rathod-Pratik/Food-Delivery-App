@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-   KeyboardAvoidingView,
-    Platform, 
-    ScrollView 
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Alert // 1. Import Alert
 } from "react-native";
 
-const OtpScreen = ({navigation}) => {
+const OtpScreen = ({ navigation }) => {
   const inputRefs = useRef([]);
   const [otp, setOtp] = useState(["", "", "", ""]);
 
@@ -33,73 +34,73 @@ const OtpScreen = ({navigation}) => {
     }
   };
 
+  const handleVarify = () => {
+    const otpString = otp.join(""); 
+
+    if (otpString.length === 4) {
+      navigation.navigate("BottomScreen");
+    } else {
+      Alert.alert("Invalid OTP", "Please enter the complete 4-digit code.");
+    }
+  };
+
   return (
-   <KeyboardAvoidingView
-  style={{ flex: 1, padding: 25, backgroundColor: "#fff" }}
-  behavior={Platform.OS === "ios" ? "padding" : "height"}
->
-  <ScrollView
-    contentContainerStyle={{ flexGrow: 1 }}
-    showsVerticalScrollIndicator={false}
-  >
-      <View style={styles.logoBox}>
-        <Image source={require("../images/Logo.png")} style={styles.logo} />
-      </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1, padding: 25, backgroundColor: "#fff" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.logoBox}>
+          <Image source={require("../images/Logo.png")} style={styles.logo} />
+        </View>
 
-      <Text style={styles.header}>Enter the 4-digit code</Text>
+        <Text style={styles.header}>Enter the 4-digit code</Text>
 
-      <Text style={styles.sub}>
-        Please input the verification code sent to your phone number 8263****40
-      </Text>
+        <Text style={styles.sub}>
+          Please input the verification code sent to your phone number 8263****40
+        </Text>
 
-      <Text style={styles.change}>Change number?</Text>
+        <Text style={styles.change}>Change number?</Text>
 
-      <View style={styles.otpRow}>
-        {otp.map((item, index) => (
-          <TextInput
-            key={index}
-            ref={(ref) => (inputRefs.current[index] = ref)}
-            style={styles.otpInput}
-            maxLength={1}
-            keyboardType="number-pad"
-            value={item}
-            onChangeText={(text) => handleChange(text, index)}
-            onKeyPress={(e) => handleKeyPress(e, index)}
-          />
-        ))}
-      </View>
+        <View style={styles.otpRow}>
+          {otp.map((item, index) => (
+            <TextInput
+              key={index}
+              ref={(ref) => (inputRefs.current[index] = ref)}
+              style={styles.otpInput}
+              maxLength={1}
+              keyboardType="number-pad"
+              value={item}
+              onChangeText={(text) => handleChange(text, index)}
+              onKeyPress={(e) => handleKeyPress(e, index)}
+            />
+          ))}
+        </View>
 
-      <Text style={styles.resend}>Didn’t get any code yet? Resend code</Text>
+        <Text style={styles.resend}>Didn’t get any code yet? Resend code</Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.btnText}>Verify</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleVarify}>
+          <Text style={styles.btnText}>Verify</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.terms}>
-        By signing up, you agree to snap{" "}
-        <Text style={styles.link}>Terms of Service</Text> and{" "}
-        <Text style={styles.link}>Privacy Policy</Text>.
-      </Text>
-
-      <TouchableOpacity
-                    style={styles.nextBtn}
-                    onPress={() => navigation.navigate("BottomScreen")}
-                  >
-                    <Text style={styles.nextTxt}>Next</Text>
-                  </TouchableOpacity>
-    </ScrollView>
-</KeyboardAvoidingView>
+        <Text style={styles.terms}>
+          By signing up, you agree to snap{" "}
+          <Text style={styles.link}>Terms of Service</Text> and{" "}
+          <Text style={styles.link}>Privacy Policy</Text>.
+        </Text>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default OtpScreen;
 
-
 const styles = StyleSheet.create({
- 
   logoBox: { alignItems: "center", marginTop: 40 },
   logo: { width: 150, height: 60 },
-  snap: { fontSize: 28, fontWeight: "700", color: "#0C1A30", marginTop: 8 },
   header: { fontSize: 26, fontWeight: "700", marginTop: 40 },
   sub: { marginTop: 10, color: "#555" },
   change: { marginTop: 15, color: "#006970", fontWeight: "700" },
@@ -111,6 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     textAlign: "center",
     fontSize: 22,
+    color: "#000" // Good practice to set text color explicitly
   },
   resend: { marginTop: 15, color: "#006970" },
   button: {
@@ -128,14 +130,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   link: { color: "#006970", fontWeight: "700" },
-   nextBtn: {
-    marginTop:10,
-    backgroundColor: "#000",
-    paddingHorizontal: 30,
-    paddingVertical: 12,
-    borderRadius: 10,
-    width:100,
-    alignSelf:"center"
-  },
-  nextTxt: { color: "#fff", fontSize: 16, fontWeight: "600" },
 });
